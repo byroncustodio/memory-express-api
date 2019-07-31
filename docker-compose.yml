@@ -1,0 +1,11 @@
+version: "3.7"
+
+services: 
+  web:
+    image: "memoryexpress/api"
+    build:
+      context: .
+      dockerfile: src/MemoryExpress.Web/Dockerfile
+    ports:
+      - "5000:5000"
+      #- "5001:5001"
