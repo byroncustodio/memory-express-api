@@ -3,8 +3,6 @@ version: "3.7"
 services:
   web:
     image: "memoryexpress/api"
-    build:
-      target: prod
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DOTNET_USE_POLLING_FILE_WATCHER=false

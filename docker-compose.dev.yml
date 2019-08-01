@@ -7,8 +7,6 @@ services:
 
   web:
     image: "memoryexpress/api:latest-dev"
-    build:
-      target: dev
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DOTNET_USE_POLLING_FILE_WATCHER=true
