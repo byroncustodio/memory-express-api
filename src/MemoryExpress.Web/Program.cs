@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace MemoryExpress.Web
 {
@@ -21,15 +22,17 @@ namespace MemoryExpress.Web
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
-                    await ApplicationDbContextSeed.SeedAsync(context);
+                    await context.Database.MigrateAsync();
                 }
                 catch (Exception ex)
                 {
-
+                    var logger = loggerFactory.CreateLogger<Program>();
+                    logger.LogError(ex, "An error occurred applying migrations to DB.");
                 }
             }
 
@@ -43,10 +46,8 @@ namespace MemoryExpress.Web
 
             if (environment == EnvironmentName.Development)
             {
-                var ports = port.Split(",");
-
                 return WebHost.CreateDefaultBuilder(args)
-                    .UseUrls(new string[] { "http://*:" + ports[0], "https://*:" + ports[1] })
+                    .UseUrls("http://*:5000;https://*:5001")
                     .UseStartup<Startup>(); 
             }
 

@@ -1,18 +1,25 @@
 using System;
 using System.Collections.Generic;
-//using MemoryExpress.Core.Domain;
 using Microsoft.EntityFrameworkCore;
+using MemoryExpress.Core.Entities;
 
-namespace MemoryExpress.Infrastructure
+namespace MemoryExpress.Infrastructure.Extensions
 {
     public static class ModelBuilderExtension
     {
-        public static void Seed(this ModelBuilder modelBuilder)
+        public static void Seed(this ModelBuilder builder)
         {
-	        // modelBuilder.Entity<Image>().HasData(
-            //     new Image { Id = 1, Url = "/assets/images/advrtas-cms-thumb.png", Alt = "Advrtas CMS Thumbnail" },
-            //     new Image { Id = 2, Url = "/assets/images/memxpress-thumb.png", Alt = "Memory Express Thumbnail" }
-            // );
+            builder.Entity<Product>().HasData(GetProductSeedData());
+        }
+
+        static Product[] GetProductSeedData()
+        {
+            return new Product[] {
+                new Product() { Id = 1, Name = "Test Product 1" },
+                new Product() { Id = 2, Name = "Test Product 2" },
+                new Product() { Id = 3, Name = "Test Product 3" },
+                new Product() { Id = 4, Name = "Test Product 4" }
+            };
         }
     }
 }

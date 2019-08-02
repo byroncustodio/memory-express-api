@@ -15,7 +15,6 @@ services:
       - "5000:5000"
       - "5001:5001"
     environment:
-      - PORT=5000,5001
       - ASPNETCORE_ENVIRONMENT=Development
       - DOTNET_USE_POLLING_FILE_WATCHER=true
     depends_on:
