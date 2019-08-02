@@ -3,13 +3,17 @@ version: 2
 jobs:
  build:
    machine: true
+   environment:
+    ASPNETCORE_ENVIRONMENT: Production
+    DOTNET_USE_POLLING_FILE_WATCHER: false
    steps:
      - checkout 
 
      # build image
      - run: |         
          docker info
-         docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+         docker build -t memoryexpress/api:latest -f src/MemoryExpress.Web/prod.Dockerfile .
+         # docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
          
      # deploy the image
      - run: |         
