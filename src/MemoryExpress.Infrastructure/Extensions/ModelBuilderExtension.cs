@@ -18,7 +18,7 @@ namespace MemoryExpress.Infrastructure.Extensions
                 new Product() { Id = 1, Name = "Test Product 1" },
                 new Product() { Id = 2, Name = "Test Product 2" },
                 new Product() { Id = 3, Name = "Test Product 3" },
-                new Product() { Id = 4, Name = "Test Product 4" }
+                new Product() { Id = 4, Name = "Test Product 5" }
             };
         }
     }
