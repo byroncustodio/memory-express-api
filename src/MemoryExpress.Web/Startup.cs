@@ -11,11 +11,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace MemoryExpress.Web
 {
@@ -64,10 +69,36 @@ namespace MemoryExpress.Web
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
             services.AddCors();
+
+            services.AddApiVersioning(options => 
+            {
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ApiVersionReader = new HeaderApiVersionReader("api-version");
+            });
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+
+            services.AddSwaggerGen(options => 
+            {
+                var provider = services.BuildServiceProvider()
+                    .GetRequiredService<IApiVersionDescriptionProvider>();
+
+                   foreach (var description in provider.ApiVersionDescriptions)
+                   {
+                       options.SwaggerDoc(
+                           description.GroupName,
+                           new Info()
+                           {
+                               Title = $"Memory Express API {description.ApiVersion}",
+                               Version = description.ApiVersion.ToString()
+                           });
+                   }
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -87,6 +118,18 @@ namespace MemoryExpress.Web
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint(
+                        $"/swagger/{description.GroupName}/swagger.json",
+                        description.GroupName.ToUpperInvariant()
+                    );
+                }
+            });
         }
     }
 }
