@@ -18,6 +18,16 @@ namespace MemoryExpress.Infrastructure.Data
             _context = context;
         }
 
+        public async Task<T> GetAsync(int id)
+        {
+            return await _context.Set<T>().FindAsync(id);
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await _context.Set<T>().ToListAsync();
+        }
+
         public async Task<T> AddAsync(T entity)
         {
             _context.Set<T>().Add(entity);
@@ -51,16 +61,6 @@ namespace MemoryExpress.Infrastructure.Data
         public async Task<T> GetSingleOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
             return await _context.Set<T>().AsQueryable().SingleOrDefaultAsync(predicate);
-        }
-
-        public async Task<T> GetAsync(int id)
-        {
-            return await _context.Set<T>().FindAsync(id);
-        }
-
-        public async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await _context.Set<T>().ToListAsync();
         }
     }
 }

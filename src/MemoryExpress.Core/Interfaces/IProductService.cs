@@ -7,8 +7,11 @@ namespace MemoryExpress.Core.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAllProducts();
-
-        //Task<Product> GetProductById(int id);
+        Task<Product> GetProductByIdAsync(int id);
+        Task<IEnumerable<Product>> GetAllProductsAsync();
+        Task AddProductAsync(Product product);
+        Task UpdateProductAsync(Product product);
+        Task DeleteProductAsync(Product product);
+        Task<int> CountProductsAsync();
     }
 }

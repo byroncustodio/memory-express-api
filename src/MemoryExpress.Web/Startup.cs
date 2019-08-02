@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MemoryExpress.Core.Interfaces;
 using MemoryExpress.Core.Services;
 using MemoryExpress.Infrastructure.Data;
+using MemoryExpress.Infrastructure.Logging;
 using MemoryExpress.Web.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -65,6 +66,7 @@ namespace MemoryExpress.Web
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -90,8 +92,10 @@ namespace MemoryExpress.Web
                            description.GroupName,
                            new Info()
                            {
-                               Title = $"Memory Express API {description.ApiVersion}",
-                               Version = description.ApiVersion.ToString()
+                                Title = $"Memory Express API {description.ApiVersion}",
+                                Version = description.ApiVersion.ToString(),
+                                Contact = new Contact() { Name = "Byron Custodio", Email = "byron.custodio@gmail.com" },
+                                License = new License() { Name = "MIT", Url = "https://opensource.org/licenses/MIT" }
                            });
                    }
             });

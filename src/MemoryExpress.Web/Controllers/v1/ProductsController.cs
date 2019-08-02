@@ -24,9 +24,26 @@ namespace MemoryExpress.Web.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetAllProducts()
         {
-            var products = await _productService.GetAllProducts();
+            var products = await _productService.GetAllProductsAsync();
 
             return Ok(products);
+        }
+
+        [HttpGet]
+        [Route("{id:int}", Name = nameof(GetProductById))]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(Product), 200 )]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(product);
         }
     }
 }
