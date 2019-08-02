@@ -36,9 +36,14 @@ namespace MemoryExpress.Web
             host.Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://0.0.0.0:5000")
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            var port = Environment.GetEnvironmentVariable("PORT");
+
+            return WebHost.CreateDefaultBuilder(args)
+                //.UseUrls("http://0.0.0.0:5000")
+                .UseUrls("http://*:"+port)
                 .UseStartup<Startup>();
+        }
     }
 }

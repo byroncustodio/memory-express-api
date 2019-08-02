@@ -7,6 +7,10 @@ services:
 
   web:
     image: "memoryexpress/api:latest-dev"
+    build:
+      dockerfile: src/MemoryExpress.Web/Dockerfile
+    ports:
+      - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DOTNET_USE_POLLING_FILE_WATCHER=true

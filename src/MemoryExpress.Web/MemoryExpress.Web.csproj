@@ -18,4 +18,8 @@
     <ProjectReference Include="..\MemoryExpress.Core\MemoryExpress.Core.csproj" />
   </ItemGroup>
 
+  <!-- <Target Name="PrePublishTarget" AfterTargets="Publish">
+    <Exec Command="dotnet ef database update -p ../MemoryExpress.Infrastructure/MemoryExpress.Infrastructure.csproj -s ./MemoryExpress.Web.csproj" />
+  </Target> -->
+
 </Project>

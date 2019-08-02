@@ -40,8 +40,15 @@ namespace MemoryExpress.Web
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
-            // services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
-            //     options.UseNpgsql(Configuration.GetConnectionString("DbContext")));
+            var builder = new PostgresqlConnectionStringBuilder(Configuration["DATABASE_URL"])
+            {
+                Pooling = true,
+                TrustServerCertificate = true,
+                SslMode = SslMode.Require
+            };
+
+            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(builder.ConnectionString));
 
             ConfigureServices(services);
         }
@@ -54,7 +61,7 @@ namespace MemoryExpress.Web
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddScoped<IProductService, ProductService>();
 
-            //services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddAutoMapper(typeof(AutoMapperProfile));
 
             services.AddCors();
         }

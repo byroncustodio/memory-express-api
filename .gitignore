@@ -330,4 +330,4 @@ ASALocalRun/
 .mfractor/
 
 # Docker-specific files
-docker-compose.prod.yml
+.env
