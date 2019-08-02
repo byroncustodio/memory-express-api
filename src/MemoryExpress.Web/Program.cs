@@ -38,11 +38,20 @@ namespace MemoryExpress.Web
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var port = Environment.GetEnvironmentVariable("PORT");
 
+            if (environment == EnvironmentName.Development)
+            {
+                var ports = port.Split(",");
+
+                return WebHost.CreateDefaultBuilder(args)
+                    .UseUrls(new string[] { "http://*:" + ports[0], "https://*:" + ports[1] })
+                    .UseStartup<Startup>(); 
+            }
+
             return WebHost.CreateDefaultBuilder(args)
-                //.UseUrls("http://0.0.0.0:5000")
-                .UseUrls("http://*:"+port)
+                .UseUrls("http://*:" + port)
                 .UseStartup<Startup>();
         }
     }
