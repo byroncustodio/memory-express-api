@@ -1,6 +1,6 @@
 # Memory Express API
 
-An API to get information on different products.
+An API to get information on different products based on the online store Memory Express.
 
 *Note: This application is in very early development.*
 
