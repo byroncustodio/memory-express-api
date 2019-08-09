@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MemoryExpress.Core.Interfaces;
-using MemoryExpress.Core.Services;
 using MemoryExpress.Infrastructure.Data;
 using MemoryExpress.Infrastructure.Logging;
 using MemoryExpress.Web.Helpers;
@@ -64,8 +63,8 @@ namespace MemoryExpress.Web
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
             services.AddAutoMapper(typeof(AutoMapperProfile));

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MemoryExpress.Infrastructure.Data
 {
-    public class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity
+    public class EfRepository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly ApplicationDbContext _context;
 
@@ -51,16 +51,6 @@ namespace MemoryExpress.Infrastructure.Data
         public async Task<int> CountAsync()
         {
             return await _context.Set<T>().AsQueryable().CountAsync();
-        }
-
-        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
-        {
-            return _context.Set<T>().AsQueryable().Where(predicate);
-        }
-
-        public async Task<T> GetSingleOrDefaultAsync(Expression<Func<T, bool>> predicate)
-        {
-            return await _context.Set<T>().AsQueryable().SingleOrDefaultAsync(predicate);
         }
     }
 }

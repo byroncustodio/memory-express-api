@@ -11,11 +11,11 @@ namespace MemoryExpress.Web.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ProductsController : Controller
     {
-        private readonly IProductService _productService;
+        private readonly IProductRepository _productRepository;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductRepository productRepository)
         {
-            _productService = productService;
+            _productRepository = productRepository;
         }
 
         [HttpGet(Name = nameof(GetAllProducts))]
@@ -24,7 +24,7 @@ namespace MemoryExpress.Web.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetAllProducts()
         {
-            var products = await _productService.GetAllProductsAsync();
+            var products = await _productRepository.GetAllAsync();
 
             return Ok(products);
         }
@@ -36,7 +36,7 @@ namespace MemoryExpress.Web.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetProductById(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
+            var product = await _productRepository.FindProductById(id);
 
             if (product == null)
             {
