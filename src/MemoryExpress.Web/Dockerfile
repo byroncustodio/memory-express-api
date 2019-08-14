@@ -6,4 +6,5 @@ COPY . .
 WORKDIR /app/src/MemoryExpress.Web
 
 RUN chmod +x ./entrypoint.sh
+RUN sed -i 's/\r$//' ./entrypoint.sh
 CMD /bin/bash ./entrypoint.sh
